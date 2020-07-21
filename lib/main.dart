@@ -42,6 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
+      
         backgroundColor: Colors.white,
         onPressed: () async {
           Position position = await Geolocator()
@@ -50,6 +51,15 @@ class _MyHomePageState extends State<MyHomePage> {
             icnColor = Colors.blue;
             _originLatitude = position.latitude;
             _originLongitude = position.longitude;
+            _markers.add(
+                  Marker(
+                      infoWindow: InfoWindow(
+                          title: 'Your location', snippet: 'This is your current location'),
+                      markerId: MarkerId(
+                        "Home",
+                      ),
+                      position: LatLng(_originLatitude, _originLongitude)),
+                );
           });
           _controller.animateCamera(
             CameraUpdate.newLatLng(
@@ -57,12 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         },
-        child: IconButton(
-          iconSize: 30.0,
-          color: icnColor,
-          
-          icon: Icon(Icons.my_location),
-        ),
+        child: Icon(Icons.my_location, color: icnColor,)
+        ,
       ),
       body: GoogleMap(
         onMapCreated: (GoogleMapController controller) {
